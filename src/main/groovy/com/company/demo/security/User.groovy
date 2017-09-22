@@ -5,6 +5,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.hibernate.annotations.Type
 import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 import javax.persistence.CascadeType
@@ -18,7 +19,7 @@ import javax.persistence.OneToMany
 
 @CompileStatic
 @EqualsAndHashCode(excludes = ['id', 'createdDate', 'lastModifiedDate'])
-@ToString(includePackage = false)
+
 @Entity
 @EntityListeners(value = AuditingEntityListener)
 class User implements Serializable {
@@ -37,7 +38,7 @@ class User implements Serializable {
     @Column(updatable = false)
     Date createdDate
 
-    @CreatedDate
+    @LastModifiedDate
     @Type(type="java.sql.Timestamp")
     @Column(updatable = false)
     Date lastModifiedDate

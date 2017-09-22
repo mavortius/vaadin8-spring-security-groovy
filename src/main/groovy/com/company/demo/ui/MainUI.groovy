@@ -1,5 +1,6 @@
 package com.company.demo.ui
 
+import com.company.demo.security.RoleType
 import com.company.demo.security.SecurityContextUtils
 import com.company.demo.view.AccessDeniedView
 import com.company.demo.view.AdminView
@@ -17,6 +18,7 @@ import com.vaadin.ui.Button
 import com.vaadin.ui.Component
 import com.vaadin.ui.CssLayout
 import com.vaadin.ui.Label
+import com.vaadin.ui.Notification
 import com.vaadin.ui.Panel
 import com.vaadin.ui.UI
 import com.vaadin.ui.VerticalLayout
@@ -66,16 +68,23 @@ class MainUI extends UI implements ViewDisplay {
     protected void init(VaadinRequest request) {
         page.title = 'Vaadin Security Demo'
         final CssLayout navigationBar = new CssLayout()
-        
+
         navigationBar.with {
             addStyleName ValoTheme.LAYOUT_COMPONENT_GROUP
             addComponent createNavigationButton('User View', UserView.VIEW_NAME)
             addComponent createNavigationButton('Admin View', AdminView.VIEW_NAME)
+            Button adminMessageButton = new Button('Show admin message', {
+                Notification.show('I am an admin message')
+            } as Button.ClickListener)
+
+            adminMessageButton.visible = SecurityContextUtils.hasRole(RoleType.ROLE_ADMIN)
+
+            addComponent adminMessageButton
             addComponent new Button('Logout', { security.logout() } as Button.ClickListener)
         }
 
         final VerticalLayout root = new VerticalLayout()
-        
+
         root.with {
             setSizeFull()
             addComponents new Label("${SecurityContextUtils.user.username} : ${LocalDateTime.now()}")

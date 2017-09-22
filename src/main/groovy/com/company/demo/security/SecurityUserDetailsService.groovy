@@ -19,7 +19,8 @@ class SecurityUserDetailsService implements UserDetailsService {
         final User user = repository.findByUsername(username)
 
         if(user) {
-            new SecurityUserDetails(user.properties)
+            def props = user.properties.findAll { prop, val -> prop != 'class' }
+            new SecurityUserDetails(props)
         } else {
             throw new UsernameNotFoundException("Username not found: $username")
         }

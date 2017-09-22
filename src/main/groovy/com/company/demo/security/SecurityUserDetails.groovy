@@ -36,7 +36,7 @@ class SecurityUserDetails extends User implements UserDetails {
 
     @Override
     boolean isCredentialsNonExpired() {
-        false
+        true
     }
 
     @Override
